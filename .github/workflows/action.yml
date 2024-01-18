@@ -67,7 +67,7 @@ jobs:
                   DB_DATABASE: ${{ secrets.DB_DATABASE }}
                   NODE_ENV: development
               run: |
-                  docker compose -f docker-compose.action.yml up -d --wait --build
+                  docker compose -f docker-compose.action.yml up --wait --build
 
             - name: Run tests
               env:
