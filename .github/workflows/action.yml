@@ -47,7 +47,7 @@ jobs:
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
 
-    tests:
+    functional-tests:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -68,6 +68,26 @@ jobs:
                   test-container: api
                   test-command: \
                       "npm run test"
+    lint-test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: adambirds/docker-compose-action@v1.3.0
+              env:
+                  DB_HOST: ${{ secrets.DB_HOST }}
+                  DB_USER: ${{ secrets.DB_USER }}
+                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+                  DB_NAME: ${{ secrets.DB_NAME }}
+                  DB_DATABASE: ${{ secrets.DB_DATABASE }}
+                  NODE_ENV: development
+              with:
+                  compose-file: "./docker-compose.yml"
+                  down-flags: "--volumes"
+                  services: |
+                      api
+                      db
+                  test-container: api
+                  test-command: \
                       "npm run lint"
 
     security:
@@ -80,7 +100,7 @@ jobs:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     deploy:
-        needs: tests
+        needs: [functional-tests, lint-test, security]
         runs-on: ubuntu-latest
         steps:
             - uses: webfactory/ssh-agent@v0.8.0
