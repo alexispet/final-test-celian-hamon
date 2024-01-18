@@ -45,6 +45,14 @@ jobs:
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
 
+            - name: Save modules
+              uses: actions/cache/save@v3
+              with:
+                  path: |
+                      ~/node_modules
+                      ~/package-lock.json
+                  key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
     tests:
         name: Run tests
         runs-on: ubuntu-latest
@@ -52,6 +60,13 @@ jobs:
         steps:
             - name: Check out the repo
               uses: actions/checkout@v4
+            - name: Restore modules
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress
+                      node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
             - name: Docker compose up
               env:
