@@ -54,6 +54,10 @@ jobs:
             - name: Check out the repo
               uses: actions/checkout@v4
 
+            - name: docker compose config
+              run: |
+                  docker compose config
+
             - name: Docker compose up
               env:
                   DB_HOST: ${{ secrets.DB_HOST }}
