@@ -20,7 +20,7 @@ env:
 jobs:
     upload-artifact:
         name: Push Docker image to Docker Hub
-        needs: tests
+        needs: [functional-tests, lint-test, security]
         runs-on: ubuntu-latest
         steps:
             - name: Check out the repo
