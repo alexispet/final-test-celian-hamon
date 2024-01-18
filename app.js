@@ -6,10 +6,10 @@ let port = process.env.PORT || 3000;
 
 // Configurations de la base de données
 const pool = mariadb.createPool({
-  host: 'mariadb',
-  user: 'votre_utilisateur',
-  password: 'votre_mot_de_passe',
-  database: 'votre_base_de_donnees',
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'user',
+  password: process.env.DB_PASSWORD || 'password',
+  database: process.env.DB_DATABASE || 'db',
   connectionLimit: 5
 });
 
@@ -25,7 +25,7 @@ app.get('/post', async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erreur lors de la récupération des posts' });
+    res.status(500).json({ error: 'Erreur lors de la récupération des postes' });
   } finally {
     if (conn) return conn.end();
   }
@@ -51,14 +51,14 @@ function findAvailablePort() {
 
 // Lancer le serveur en utilisant le port disponible
 findAvailablePort()
-    .then((availablePort) => {
-      port = availablePort;
-      app.listen(port, () => {
-        console.log(`Serveur en cours d'exécution sur le port ${port}`);
-      });
-    })
-    .catch((err) => {
-      console.error('Erreur lors du démarrage du serveur:', err);
+  .then((availablePort) => {
+    port = availablePort;
+    app.listen(port, () => {
+      console.log(`Serveur en cours d'exécution sur le port ${port}`);
     });
+  })
+  .catch((err) => {
+    console.error('Erreur lors du démarrage du serveur:', err);
+  });
 
 export default app;
