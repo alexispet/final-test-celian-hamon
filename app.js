@@ -3,10 +3,14 @@ import mariadb from 'mariadb';
 
 const app = express();
 let port = process.env.PORT || 3000;
+if (process.env.DB_HOST === undefined) {
+  console.error('Veuillez définir la variable d\'environnement DB_HOST');
+  process.exit(1);
+}
 
 // Configurations de la base de données
 const pool = mariadb.createPool({
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST,
   user: process.env.DB_USER || 'user',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_DATABASE || 'db',

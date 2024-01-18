@@ -1,6 +1,7 @@
 #!/bin/bash
 
-if [$NODE_ENV != "production"]; then
+if [ $NODE_ENV == "development" ]
+then
     npm install
 fi
 
