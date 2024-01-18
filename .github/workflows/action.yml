@@ -97,7 +97,7 @@ jobs:
               env:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-    deploy:
+    deploy-prod:
         needs: [functional-tests, lint-test, security]
         runs-on: ubuntu-latest
         steps:
@@ -110,13 +110,26 @@ jobs:
                   git pull && \
                   sudo sh deploy.sh"
 
+    deploy-dev:
+        needs: [functional-tests, lint-test, security]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: webfactory/ssh-agent@v0.8.0
+              with:
+                  ssh-private-key: ${{ secrets.SSH_KEY }}
+            - run: |
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  cd ~/final-test-celian-hamon-dev && \
+                  git pull && \
+                  sudo sh deploy.sh"
+
     notify:
-        needs: deploy
+        needs: deploy-prod
         runs-on: ubuntu-latest
         steps:
             - name: Shoutrrr
               uses: containrrr/shoutrrr-action@v1
               with:
                   url: ${{ secrets.NOTIFICATION_URL }}
-                  title: Deployed ${{ github.sha }}
+                  title: Deployed ${{ github.sha }} on PRODUCTION
                   message: See changes at ${{ github.event.compare }}.

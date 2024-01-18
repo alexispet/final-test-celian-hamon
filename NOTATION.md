@@ -9,7 +9,7 @@
 -   [x] Dans un workflow GitHub, vous construisez et envoyez l’image docker de l’application sur un registry
 -   [x] Dans un workflow GitHub, vous lancez un audit de sécurité
 -   [ ] Dans un workflow GitHub, lighthouse est lancé tous les jours pour auditer les performances de l’application
--   [ ] Envoyer une notification (email, slack, discord...) quand un environnement est déployé
+-   [x] Envoyer une notification (email, slack, discord...) quand un environnement est déployé
 -   [x] Les identifiants de connexion à la base de données sont passés en environnement
 -   [x] Les identifiants de connexion à la base de données de prod ne sont jamais visibles dans le code versionné
 -   [x] Vous avez eslint de fonctionnel en local et sur le workflow GitHub
