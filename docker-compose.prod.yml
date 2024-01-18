@@ -1,0 +1,41 @@
+version: "3.3"
+
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "80:3000"
+        volumes:
+            - .:/app
+        environment:
+            PORT: 3000
+            DB_HOST: "db"
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - default
+        depends_on:
+            - db
+
+    db:
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "3306:3306"
+        expose:
+            - "3306"
+        volumes:
+            - ./db:/var/lib/mysql
+        networks:
+            - default
+
+networks:
+    default:
+        driver: bridge
