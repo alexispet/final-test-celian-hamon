@@ -66,8 +66,7 @@ jobs:
                       api
                       db
                   test-container: api
-                  test-command: \
-                      "npm run test"
+                  test-command: "npm run test"
     lint-test:
         runs-on: ubuntu-latest
         steps:
@@ -87,8 +86,7 @@ jobs:
                       api
                       db
                   test-container: api
-                  test-command: \
-                      "npm run lint"
+                  test-command: "npm run lint"
 
     security:
         runs-on: ubuntu-latest
