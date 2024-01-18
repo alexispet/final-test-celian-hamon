@@ -2,6 +2,7 @@
 
 if [ $NODE_ENV == "development" ]
 then
+    echo "Installing modules"
     npm install
 fi
 
