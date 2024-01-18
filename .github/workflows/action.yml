@@ -20,6 +20,7 @@ env:
 jobs:
     upload-artifact:
         name: Push Docker image to Docker Hub
+        needs: tests
         runs-on: ubuntu-latest
         steps:
             - name: Check out the repo
@@ -65,4 +66,39 @@ jobs:
                       api
                       db
                   test-container: api
-                  test-command: "npm run test"
+                  test-command: \
+                      "npm run test"
+                      "npm run lint"
+
+    security:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@master
+            - name: Run Snyk to check for vulnerabilities
+              uses: snyk/actions/node@master
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    deploy:
+        needs: tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: webfactory/ssh-agent@v0.8.0
+              with:
+                  ssh-private-key: ${{ secrets.SSH_KEY }}
+            - run: |
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  cd ~/final-test-celian-hamon && \
+                  git pull && \
+                  sh deploy.sh"
+
+    notify:
+        needs: deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: Shoutrrr
+              uses: containrrr/shoutrrr-action@v1
+              with:
+                  url: ${{ secrets.NOTIFICATION_URL }}
+                  title: Deployed ${{ github.sha }}
+                  message: See changes at ${{ github.event.compare }}.
