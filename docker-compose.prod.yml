@@ -1,26 +1,6 @@
 version: "3.3"
 
 services:
-    api:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - "80:3000"
-        volumes:
-            - .:/app
-        environment:
-            NODE_ENV: production
-            PORT: 3000
-            DB_HOST: "db"
-            DB_DATABASE: ${DB_DATABASE}
-            DB_USER: ${DB_USER}
-            DB_PASSWORD: ${DB_PASSWORD}
-        networks:
-            - default
-        depends_on:
-            - db
-
     db:
         image: mariadb:11.2.2-jammy
         restart: always
@@ -49,3 +29,23 @@ services:
             interval: 1s
             timeout: 5s
             retries: 20
+
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "80:3000"
+        volumes:
+            - .:/app
+        environment:
+            NODE_ENV: production
+            PORT: 3000
+            DB_HOST: "db"
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - default
+        depends_on:
+            - db
