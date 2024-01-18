@@ -108,7 +108,7 @@ jobs:
                   ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
                   cd ~/final-test-celian-hamon && \
                   git pull && \
-                  sh deploy.sh"
+                  sudo sh deploy.sh"
 
     notify:
         needs: deploy
