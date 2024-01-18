@@ -37,6 +37,7 @@ jobs:
                   DB_USER: ${{ secrets.DB_USER }}
                   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
                   DB_NAME: ${{ secrets.DB_NAME }}
+                  DB_DATABASE: ${{ secrets.DB_DATABASE }}
               with:
                   context: .
                   file: ./Dockerfile
@@ -58,6 +59,7 @@ jobs:
                   DB_USER: ${{ secrets.DB_USER }}
                   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
                   DB_NAME: ${{ secrets.DB_NAME }}
+                  DB_DATABASE: ${{ secrets.DB_DATABASE }}
               run: |
                   docker compose -f docker-compose.action.yml up -d
 
@@ -67,5 +69,6 @@ jobs:
                   DB_USER: ${{ secrets.DB_USER }}
                   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
                   DB_NAME: ${{ secrets.DB_NAME }}
+                  DB_DATABASE: ${{ secrets.DB_DATABASE }}
               run: |
                   docker compose exec api npm run test

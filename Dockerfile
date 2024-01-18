@@ -4,11 +4,11 @@ COPY . /app
 
 WORKDIR /app
 
-RUN npm install
-
 EXPOSE ${PORT}
 
 FROM build as runner
+
+RUN npm install
 
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
