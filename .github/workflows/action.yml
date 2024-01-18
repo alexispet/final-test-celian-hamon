@@ -47,18 +47,10 @@ jobs:
                   labels: ${{ steps.meta.outputs.labels }}
 
     tests:
-        name: Run tests
         runs-on: ubuntu-latest
-        needs: upload-artifact
         steps:
-            - name: Check out the repo
-              uses: actions/checkout@v4
-
-            - name: docker compose config
-              run: |
-                  docker compose config
-
-            - name: Docker compose up
+            - uses: actions/checkout@v4
+            - uses: adambirds/docker-compose-action@v1.3.0
               env:
                   DB_HOST: ${{ secrets.DB_HOST }}
                   DB_USER: ${{ secrets.DB_USER }}
@@ -66,16 +58,11 @@ jobs:
                   DB_NAME: ${{ secrets.DB_NAME }}
                   DB_DATABASE: ${{ secrets.DB_DATABASE }}
                   NODE_ENV: development
-              run: |
-                  docker compose -f docker-compose.action.yml up --wait --build
-
-            - name: Run tests
-              env:
-                  DB_HOST: ${{ secrets.DB_HOST }}
-                  DB_USER: ${{ secrets.DB_USER }}
-                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-                  DB_NAME: ${{ secrets.DB_NAME }}
-                  DB_DATABASE: ${{ secrets.DB_DATABASE }}
-                  NODE_ENV: development
-              run: |
-                  docker compose exec api npm run test
+              with:
+                  compose-file: "./docker-compose.yml"
+                  down-flags: "--volumes"
+                  services: |
+                      app
+                      mariadb
+                  test-container: app
+                  test-command: "npm run test"
