@@ -62,7 +62,7 @@ jobs:
                   compose-file: "./docker-compose.yml"
                   down-flags: "--volumes"
                   services: |
-                      app
-                      mariadb
-                  test-container: app
+                      api
+                      db
+                  test-container: api
                   test-command: "npm run test"
