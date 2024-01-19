@@ -1,9 +1,11 @@
 name: Lightouse
 
 on:
-    schedule:
-        # - cron: "0 * * * 1"
-        - cron: "10 * * * *"
+    push:
+        branches:
+            - main
+    # schedule:
+    #     # - cron: "0 * * * 1"
 
 jobs:
     build:
