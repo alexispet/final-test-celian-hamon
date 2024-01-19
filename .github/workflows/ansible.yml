@@ -27,4 +27,4 @@ jobs:
                   chmod 600 .ssh/key
             - name: run exporters playbook
               run: |
-                  ansible-playbook -i gitinventory deploy.yml
+                  ansible-playbook -i gitinventory ./ansible/deploy.yml
