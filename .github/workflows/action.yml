@@ -17,6 +17,7 @@ env:
     DB_NAME: ${{ secrets.DB_NAME }}
     DB_DATABASE: ${{ secrets.DB_DATABASE }}
     NODE_ENV: development
+    HOST: ${{ secrets.SSH_HOST }}
 jobs:
     upload-artifact:
         name: Push Docker image to Docker Hub
