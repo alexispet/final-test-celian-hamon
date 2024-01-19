@@ -6,9 +6,11 @@
 
 ## LE WATCH TOWER EST INSTALLÉ SUR LE SERVEUR AWS
 
-Production URL: https://ec2-54-224-95-216.compute-1.amazonaws.com/
-Development URL: http://ec2-54-224-95-216.compute-1.amazonaws.com:81/
-impossible de set un sous domaine sur le serveur aws
+-   Production URL: https://ec2-54-224-95-216.compute-1.amazonaws.com/
+-   Development URL: http://ec2-54-224-95-216.compute-1.amazonaws.com:81/
+    > impossible de set un sous domaine sur le serveur aws
+
+## IMAGE DOCKER SUR DOCKER HUB A https://hub.docker.com/r/skelletondude/pipeline-cesi
 
 ## Description
 
