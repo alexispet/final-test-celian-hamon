@@ -1,0 +1,30 @@
+name: deploy with ansible
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v1
+            - name: Set up Python 3.7
+              uses: actions/setup-python@v1
+              with:
+                  python-version: 3.7
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install ansible
+            - name: set ansible config secrets
+              env:
+                  DO_SSH_KEY: ${{ secrets.SSH_KEY }}
+              run: |
+                  mkdir .ssh
+                  echo "$SSH_KEY" > .ssh/key
+                  chmod 600 .ssh/key
+            - name: run exporters playbook
+              run: |
+                  ansible-playbook -i gitinventory deploy.yml

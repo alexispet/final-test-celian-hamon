@@ -1,0 +1,24 @@
+- name: Pull git repo and run deploy script
+  hosts: webservers
+  remote_user: admin
+  become: true
+  become_method: sudo
+
+  tasks:
+      - name: Pull git repo
+        git:
+            repo: https://github.com/alexispet/final-test-celian-hamon/
+            dest: /home/admin/final-test-celian-hamon
+            version: main
+
+      - name: Run deploy script
+        shell: /home/admin/final-test-celian-hamon/deploy.sh
+
+      - name: Pull git repo dev
+        git:
+            repo: https://github.com/alexispet/final-test-celian-hamon/
+            dest: /home/admin/final-test-celian-hamon-dev
+            version: main
+
+      - name: Run deploy script dev
+        shell: /home/admin/final-test-celian-hamon-dev/deploy-dev.sh
