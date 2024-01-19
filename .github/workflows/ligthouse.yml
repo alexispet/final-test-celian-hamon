@@ -2,7 +2,8 @@ name: Lightouse
 
 on:
     schedule:
-        - cron: "0 * * * 1"
+        # - cron: "0 * * * 1"
+        - cron: "10 * * * *"
 
 jobs:
     build:
