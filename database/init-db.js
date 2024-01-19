@@ -32,7 +32,7 @@ async function initDB() {
     console.log('Structure de la base de données créée avec succès.');
     await conn.query(`
           INSERT INTO posts (title, content) VALUES
-          ('Premier post', 'Contenu du premier post'),
+          ('Premier post', 'Contenu du deuxieme post'),
           ('Deuxième post', 'Contenu du deuxième post'),
           ('Troisième post', 'Contenu du troisième post')
         `);
