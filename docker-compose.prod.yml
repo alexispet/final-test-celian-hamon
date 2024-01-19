@@ -40,7 +40,9 @@ services:
             - "traefik.http.routers.api.entrypoints=websecure"
             - "traefik.http.routers.api.tls.certresolver=myresolver"
             - "traefik.http.services.api.loadbalancer.server.port=3000"
-            - "traefik.docker.network=default"
+            - "traefik.docker.network=traefik"
+        port:
+            - "80:3000"
         environment:
             NODE_ENV: production
             PORT: 3000
@@ -50,6 +52,7 @@ services:
             DB_PASSWORD: ${DB_PASSWORD}
         networks:
             - default
+            - traefik
         depends_on:
             db:
                 condition: service_healthy
@@ -58,14 +61,12 @@ services:
         image: "traefik:v2.10"
         container_name: "traefik"
         command:
-            #- "--log.level=DEBUG"
             - "--api.insecure=true"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
             - "--entrypoints.web.address=:80"
             - "--entrypoints.websecure.address=:443"
             - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-            #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
             - "--certificatesresolvers.myresolver.acme.email=skelletondude@gmail.com"
             - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
         ports:
@@ -75,3 +76,10 @@ services:
         volumes:
             - "./letsencrypt:/letsencrypt"
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
+        networks:
+            - traefik
+            - default
+
+networks:
+    traefik:
+        external: true
