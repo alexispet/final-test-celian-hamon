@@ -1,5 +1,9 @@
 name: Lighthouse CI
-on: push
+on:
+    schedule:
+        #every week
+        - cron: "0 0 * * 0"
+
 jobs:
     lighthouse:
         runs-on: ubuntu-latest
