@@ -1,34 +1,13 @@
-name: Lightouse
-
-on:
-    push:
-        branches:
-            - main
-    # schedule:
-    #     # - cron: "0 * * * 1"
-
+name: Lighthouse CI
+on: push
 jobs:
-    build:
+    lighthouse:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: adambirds/docker-compose-action@v1.3.0
-              env:
-                  DB_HOST: ${{ secrets.DB_HOST }}
-                  DB_USER: ${{ secrets.DB_USER }}
-                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-                  DB_NAME: ${{ secrets.DB_NAME }}
-                  DB_DATABASE: ${{ secrets.DB_DATABASE }}
-                  NODE_ENV: development
+            - uses: actions/checkout@v3
+            - name: Audit URLs using Lighthouse
+              uses: treosh/lighthouse-ci-action@v10
               with:
-                  compose-file: "./docker-compose.yml"
-                  down-flags: "--volumes"
-                  services: |
-                      api
-                      db
-                  test-container: api
-                  test-command: "lightouse http://localhost:3000 --output json --output-path ./lighthouse.json"
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: lighthouse
-                  path: ./lighthouse.json
+                  urls: http://{{ secrets.SSH_HOST }}:80
+                  uploadArtifacts: true # save results as an action artifacts
+                  temporaryPublicStorage: true # upload lighthouse report to the temporary storage
