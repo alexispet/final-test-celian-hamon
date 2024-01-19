@@ -4,3 +4,4 @@ docker/mariadb/data
 db
 ansible/key.pem
 .env
+letsencrypt

@@ -32,11 +32,15 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        ports:
-            - "80:3000"
-            - "443:3000"
         volumes:
             - .:/app
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.api.rule=Host(`${HOST}`)"
+            - "traefik.http.routers.api.entrypoints=websecure"
+            - "traefik.http.routers.api.tls.certresolver=myresolver"
+            - "traefik.http.services.express-dev.loadbalancer.server.port=3000"
+            - "traefik.docker.network=default"
         environment:
             NODE_ENV: production
             PORT: 3000
@@ -58,12 +62,14 @@ services:
             - "--api.insecure=true"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
             - "--entrypoints.websecure.address=:443"
-            - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+            - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
             #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
             - "--certificatesresolvers.myresolver.acme.email=skelletondude@gmail.com"
             - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
         ports:
+            - "80:80"
             - "443:443"
             - "8081:8080"
         volumes:
